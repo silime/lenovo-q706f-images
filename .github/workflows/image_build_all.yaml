@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        DEVICE: [q706f]
+        DEVICE: [fajita]
         EDITION: [gnome,kde-plasma,plasma-mobile,phosh]
         BRANCH: [stable]
     steps:
@@ -23,7 +23,7 @@ jobs:
           format: 'YYYYMMDD'
       -
         id: image-build
-        uses: silime/lenovo-q706f-images@main
+        uses: silime/phosh@master
         with:
           arm-profiles-repo: https://github.com/silime/arm-profiles
           device: ${{ matrix.device }}
