@@ -11,19 +11,21 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        DEVICE: [generic]
-        EDITION: [gnome,kde-plasma,mate,minimal,sway,xfce]
+        DEVICE: [q706f]
+        EDITION: [gnome,kde-plasma,plasma-mobile,minimal,phosh]
         BRANCH: [stable]
     steps:
       -
         id: time
         uses: boredland/get-time-action@2.0.0
         with:
-          format: '23.MM'
+          timeZone: 8
+          format: 'YYYYMMDD'
       -
         id: image-build
-        uses: manjaro-arm/rootfs@master
+        uses: silime/lenovo-q706f-images@main
         with:
+          arm-profiles-repo: https://github.com/silime/arm-profiles
           device: ${{ matrix.device }}
           edition: ${{ matrix.edition }}
           branch: ${{ matrix.branch }}
@@ -42,6 +44,7 @@ jobs:
           prerelease: false
           files: |
             ${{ env.FILE_PATH }}
+            ${{ env.ROOTFS_PATH }}
             ${{ env.FILE_SHA256 }}
             ${{ env.FILE_TORRENT }}
             ${{ env.FILE_PKG }}
