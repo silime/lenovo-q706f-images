@@ -164,7 +164,7 @@ runs:
       env:
         REPO: ${{ inputs.arm-profiles-repo }}
       run: |
-        sudo git clone --depth 1 ${REPO} arm-profiles  -b lenovo-q706f       
+        sudo git clone --depth 1 ${REPO} arm-profiles  
     -
       id: build
       shell: bash
