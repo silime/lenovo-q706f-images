@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         DEVICE: [q706f]
-        EDITION: [gnome,kde-plasma,plasma-mobile,minimal,phosh]
+        EDITION: [gnome,kde-plasma,plasma-mobile,phosh]
         BRANCH: [stable]
     steps:
       -
