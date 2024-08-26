@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        DEVICE: [fajita]
+        DEVICE: [q706f]
         EDITION: [gnome,kde-plasma,plasma-mobile,phosh]
         BRANCH: [stable]
     steps:
@@ -20,10 +20,10 @@ jobs:
         uses: boredland/get-time-action@2.0.0
         with:
           timeZone: 8
-          format: 'YYYYMMDD'
+          format: '24.MM'
       -
         id: image-build
-        uses: silime/phosh@master
+        uses: silime/lenovo-q706f-images@main
         with:
           arm-profiles-repo: https://github.com/silime/arm-profiles
           device: ${{ matrix.device }}
