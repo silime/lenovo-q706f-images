@@ -1,6 +1,8 @@
-name: image_build_all
+name: image_stable_build
 on:
   workflow_dispatch:
+#  schedule:
+#    - cron:  '30 2 * * 1'
 
 concurrency:
   group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
@@ -19,8 +21,7 @@ jobs:
         id: time
         uses: boredland/get-time-action@2.0.0
         with:
-          timeZone: 8
-          format: '24.MM'
+          format: 'YYYYMMDD'
       -
         id: image-build
         uses: silime/lenovo-q706f-images@main
@@ -29,7 +30,7 @@ jobs:
           device: ${{ matrix.device }}
           edition: ${{ matrix.edition }}
           branch: ${{ matrix.branch }}
-          version: ${{ steps.time.outputs.time }}
+          version: beta17
           #gpg-key: ${{ secrets.CI_GPG_SECRET }}
           #gpg-passphrase: ${{ secrets.CI_GPG_PASSPHRASE }}
       -
@@ -38,10 +39,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.time.outputs.time }}
-          name: Release ${{ steps.time.outputs.time }}
+          tag_name: beta17
+          name: Beta 17
           draft: false
-          prerelease: false
+          prerelease: true
           files: |
             ${{ env.FILE_PATH }}
             ${{ env.ROOTFS_PATH }}
