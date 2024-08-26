@@ -215,7 +215,7 @@ runs:
         sudo chown $USER /mnt/
         mkdir -p /mnt/out
         cat /var/cache/manjaro-arm-tools/boot/dtb/qcom/sm8250-lenovo-q706f.dtb >> ./vmlinuz-linux-sm8250
-        sudo abootimg --create /mnt/out/manjaro-fajita-boot.img -k ./vmlinuz-linux-sm8250 -r initramfs-linux.img -c "cmdline=root=PARTLABEL=ROOT_MNJRO rw"-root.img"
+        sudo abootimg --create /mnt/out/manjaro-fajita-boot.img -k ./vmlinuz-linux-sm8250 -r initramfs-linux.img -c "cmdline=root=PARTLABEL=ROOT_MNJRO rw"
         sudo cp -r /var/cache/manjaro-arm-tools/boot/* /var/cache/manjaro-arm-tools/root/boot
         sudo sed -i '/\/boot/s/^/# /' /var/cache/manjaro-arm-tools/root/etc/fstab
         sudo umount  /var/cache/manjaro-arm-tools/root/
