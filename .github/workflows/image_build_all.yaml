@@ -14,14 +14,14 @@ jobs:
     strategy:
       matrix:
         DEVICE: [q706f]
-        EDITION: [gnome,kde-plasma,plasma-mobile,phosh,minimal]
+        EDITION: [gnome,kde-plasma,mate,minimal,sway,xfce,minimal]
         BRANCH: [stable]
     steps:
       -
         id: time
         uses: boredland/get-time-action@2.0.0
         with:
-          timeZone: 8
+          timeZone: UTC+8
           format: 'YYYYMMDD'
       -
         id: image-build
