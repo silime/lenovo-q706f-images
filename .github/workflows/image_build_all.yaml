@@ -21,6 +21,7 @@ jobs:
         id: time
         uses: boredland/get-time-action@2.0.0
         with:
+          timeZone: 8
           format: 'YYYYMMDD'
       -
         id: image-build
@@ -30,7 +31,7 @@ jobs:
           device: ${{ matrix.device }}
           edition: ${{ matrix.edition }}
           branch: ${{ matrix.branch }}
-          version: beta17
+          version: ${{ steps.time.outputs.time }}
           #gpg-key: ${{ secrets.CI_GPG_SECRET }}
           #gpg-passphrase: ${{ secrets.CI_GPG_PASSPHRASE }}
       -
@@ -39,8 +40,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: beta17
-          name: Beta 17
+          tag_name: ${{ steps.time.outputs.time }}
+          name: Release ${{ steps.time.outputs.time }}
           draft: false
           prerelease: true
           files: |

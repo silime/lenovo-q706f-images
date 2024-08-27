@@ -179,8 +179,8 @@ runs:
         #CI_GPG_PASSPHRASE: ${{ inputs.CI_GPG_PASSPHRASE }}
       run: |
         mkdir packages
-        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/bootmac-0.5.0-1-aarch64.pkg.tar.xz -P packages
-        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/device-lenovo-q706f-0.0.1-0-aarch64.pkg.tar.xz -P packages 
+        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/bootmac-0.5.0-1-aarch64.pkg.tar.zst -P packages
+        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/device-lenovo-q706f-0.0.1-0-aarch64.pkg.tar.zst -P packages 
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-20240823.1be7345-1-any.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-qcom-20240823.1be7345-1-any.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-sensors-20240823.1be7345-1-any.pkg.tar.zst -P packages
@@ -188,8 +188,9 @@ runs:
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux-sm8250-6.11-rc4/linux-sm8250-6.11.rc4-1-aarch64.pkg.tar.zst  -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/q6voice/tinyalsa-git-2.0.0+58.r595.20240621.7f06b2f-1-aarch64.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/hexagonrpcd-0.3.2-0-aarch64.pkg.tar.zst -P packages
-        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/libssc-0.1.6-1-aarch64.pkg.tar.zst -P packages
+        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/libssc-0.1.6-2-aarch64.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/qmic-git-1.0.r0.g4574736-1-aarch64.pkg.tar.zst -P packages
+        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/qbootctl-0.2.0-1-aarch64.pkg.tar.zst -P packages
         [ "$IMGTYPE" != "factory" ] && unset IMGTYPE
         sudo mv -v $GITHUB_WORKSPACE/arm-profiles /usr/share/manjaro-arm-tools/profiles
         if [ -z ${{ inputs.overlay-repo }} ]; then 
@@ -215,7 +216,7 @@ runs:
         sudo chown $USER /mnt/
         mkdir -p /mnt/out
         cat /var/cache/manjaro-arm-tools/boot/dtb/qcom/sm8250-lenovo-q706f.dtb >> ./vmlinuz-linux-sm8250
-        sudo abootimg --create /mnt/out/manjaro-fajita-boot.img -k ./vmlinuz-linux-sm8250 -r initramfs-linux.img -c "cmdline=root=PARTLABEL=ROOT_MNJRO rw"
+        sudo abootimg --create /mnt/out/manjaro-$DEVICE-boot.img -k ./vmlinuz-linux-sm8250 -r initramfs-linux.img -c "cmdline=root=PARTLABEL=ROOT_MNJRO rw rootwait audit=0 splash plymouth.ignore-serial-consoles biosdevname=0 net.ifnames=0"
         sudo cp -r /var/cache/manjaro-arm-tools/boot/* /var/cache/manjaro-arm-tools/root/boot
         sudo sed -i '/\/boot/s/^/# /' /var/cache/manjaro-arm-tools/root/etc/fstab
         sudo umount  /var/cache/manjaro-arm-tools/root/
