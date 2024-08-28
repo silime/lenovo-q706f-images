@@ -185,7 +185,7 @@ runs:
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-qcom-20240823.1be7345-1-any.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-sensors-20240823.1be7345-1-any.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-whence-20240823.1be7345-1-any.pkg.tar.zst -P packages
-        wget https://github.com/silime/ArchLinux-Packages/releases/download/linux-sm8250-6.11-rc4/linux-sm8250-6.11.rc4-1-aarch64.pkg.tar.zst  -P packages
+        wget https://github.com/silime/ArchLinux-Packages/releases/download/linux-sm8250-6.11-rc4-1/linux-sm8250-6.11.rc4-1-aarch64.pkg.tar.zst  -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/q6voice/tinyalsa-git-2.0.0+58.r595.20240621.7f06b2f-1-aarch64.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/hexagonrpcd-0.3.2-0-aarch64.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/libssc-0.1.6+r4+ge0ee55f-1-aarch64.pkg.tar.zst -P packages
