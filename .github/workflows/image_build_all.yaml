@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         DEVICE: [q706f]
-        EDITION: [gnome,kde-plasma,mate,minimal,sway,xfce,minimal]
+        EDITION: [gnome,kde-plasma,mate,minimal,sway,xfce]
         BRANCH: [stable]
     steps:
       -
