@@ -228,10 +228,14 @@ runs:
         # Packaging the SD Card Image
         echo "Packaging the SD Card Image"
         cp /mnt/out/manjaro-$DEVICE-boot.img /var/cache/manjaro-arm-tools/img
+        sudo umount /var/cache/manjaro-arm-tools/boot
+        sudo umount /var/cache/manjaro-arm-tools/root
         # tar -Jcvf "$(basename $FILE_PATH)"-sdcard.tar.xz -C /var/cache/manjaro-arm-tools/img .
         tar -cf - -C /var/cache/manjaro-arm-tools/img . | xz -T$(nproc) -z -  > "$(basename $FILE_PATH)"-sdcard.tar.xz
         
         # Packaging the Rootfs Image
+        sudo mount $BOOT_LOOP /var/cache/manjaro-arm-tools/boot
+        sudo mount $ROOT_LOOP /var/cache/manjaro-arm-tools/root
         sudo cp -r /var/cache/manjaro-arm-tools/boot/* /var/cache/manjaro-arm-tools/root/boot
         sudo sed -i '/\/boot/s/^/# /' /var/cache/manjaro-arm-tools/root/etc/fstab
         sudo umount  /var/cache/manjaro-arm-tools/root/
