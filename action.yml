@@ -179,7 +179,7 @@ runs:
         #CI_GPG_PASSPHRASE: ${{ inputs.CI_GPG_PASSPHRASE }}
       run: |
         mkdir packages
-        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/bootmac-0.5.0-2-aarch64.pkg.tar.zst -P packages
+        wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/persistent-mac-0.1-1-aarch64.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/sensors/device-lenovo-q706f-0.0.1-0-aarch64.pkg.tar.zst -P packages 
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-20240823.1be7345-1-any.pkg.tar.zst -P packages
         wget https://github.com/silime/ArchLinux-Packages/releases/download/linux_firmware-20240811/linux-firmware-lenovo-sm8250-qcom-20240823.1be7345-1-any.pkg.tar.zst -P packages
