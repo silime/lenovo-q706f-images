@@ -203,11 +203,17 @@ runs:
         ls -lasih /var/cache/manjaro-arm-tools/img
           
         FILE_PATH=$(find /var/cache/manjaro-arm-tools/img -type f -name "*.img" -exec stat -c '%Y %n' {} \; | sort -nr | awk 'NR==1 {print $2}')
-        tar -Jcvf "$(basename $FILE_PATH)".tar.xz  $FILE_PATH
+        
         # mount img
         LOOP=`sudo losetup -f --show -P $FILE_PATH`
         BOOT_LOOP="$LOOP"p1
         ROOT_LOOP="$LOOP"p2
+
+        # rename label
+        sudo parted -s "$LOOP" name 1 boot
+        sudo parted -s "$LOOP" name 2 rootfs
+
+        # Packaging the Android boot
         sudo mkdir {/var/cache/manjaro-arm-tools/boot,/var/cache/manjaro-arm-tools/root}
         sudo mount $BOOT_LOOP /var/cache/manjaro-arm-tools/boot
         sudo mount $ROOT_LOOP /var/cache/manjaro-arm-tools/root
@@ -217,7 +223,15 @@ runs:
         sudo chown $USER /mnt/
         mkdir -p /mnt/out
         cat /var/cache/manjaro-arm-tools/boot/dtb/qcom/sm8250-lenovo-q706f.dtb >> ./vmlinuz-linux-sm8250
-        sudo abootimg --create /mnt/out/manjaro-$DEVICE-boot.img -k ./vmlinuz-linux-sm8250 -r initramfs-linux.img -c "cmdline=root=PARTLABEL=ROOT_MNJRO rw rootwait audit=0 splash plymouth.ignore-serial-consoles biosdevname=0 net.ifnames=0"
+        sudo abootimg --create /mnt/out/manjaro-$DEVICE-boot.img -k ./vmlinuz-linux-sm8250 -r initramfs-linux.img -c "cmdline=root=PARTLABEL=rootfs rw rootwait audit=0 splash plymouth.ignore-serial-consoles biosdevname=0 net.ifnames=0"
+        
+        # Packaging the SD Card Image
+        echo "Packaging the SD Card Image"
+        cp /mnt/out/manjaro-$DEVICE-boot.img /var/cache/manjaro-arm-tools/img
+        # tar -Jcvf "$(basename $FILE_PATH)"-sdcard.tar.xz -C /var/cache/manjaro-arm-tools/img .
+        tar -cf - -C /var/cache/manjaro-arm-tools/img . | xz -T$(nproc) -z -  > "$(basename $FILE_PATH)"-sdcard.tar.xz
+        
+        # Packaging the Rootfs Image
         sudo cp -r /var/cache/manjaro-arm-tools/boot/* /var/cache/manjaro-arm-tools/root/boot
         sudo sed -i '/\/boot/s/^/# /' /var/cache/manjaro-arm-tools/root/etc/fstab
         sudo umount  /var/cache/manjaro-arm-tools/root/
@@ -226,13 +240,15 @@ runs:
         sudo chown $USER /mnt/out/*
         sudo chown $USER /mnt/*
         #TODO img2simg 
-        tar -Jcvf "$(basename $FILE_PATH .img)"-rootfs.tar.xz  -C /mnt/out .
+        echo "Packaging the Rootfs Image"
+        # tar -Jcvf "$(basename $FILE_PATH .img)"-rootfs.tar.xz  -C /mnt/out .
+        tar -cf - -C /mnt/out . | xz -T$(nproc) -z -  > "$(basename $FILE_PATH .img)"-rootfs.tar.xz
         ls -lasih /var/cache/manjaro-arm-tools/img
         ls -lasih /mnt
         ls -lasih ./
         ROOTFS_PATH="$(basename $FILE_PATH .img)"-rootfs.tar.xz
         sudo rm $FILE_PATH
-        FILE_PATH=$FILE_PATH.tar.xz
+        FILE_PATH=$FILE_PATH-sdcard.tar.xz
         echo "file-path=$(basename $FILE_PATH)" >> $GITHUB_OUTPUT
         echo "file-path=$(basename $ROOTFS_PATH)" >> $GITHUB_OUTPUT
         sha256sum $(basename $FILE_PATH) > $(basename $FILE_PATH).sha256
